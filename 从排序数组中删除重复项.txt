@@ -1,0 +1,27 @@
+int removeDuplicates(int* nums, int numsSize) {
+    
+    //printf("%d\n",numsSize);
+   
+    /*
+    //计算数组长度
+    int *p = nums;
+    numsSize = 0;
+    while(*p++)
+        numsSize++;
+    printf("%d\n",numsSize);
+    */
+      
+    for(int i = 1;i<numsSize;i++)
+        if( nums[i] == nums[i-1] )
+        {
+           
+            for(int j = i+1 ; j < numsSize ;j++)    //后面的往前移动1位
+                nums[j-1] = nums[j];
+            
+             numsSize--;                            //总长度-1
+             i--;                                   //指针在这个位置保持不动
+        }
+            
+    
+    return numsSize;
+}
