@@ -1,0 +1,68 @@
+bool isValidSudoku(char** board, int boardRowSize, int boardColSize) {
+    /*col=column竖行 row=row横行*/
+    //注意是ASCII码字符‘1’-‘9’
+    int i,j;//行，列
+    if(boardRowSize != 9 || boardColSize !=9)//检查输入参数：给定数独永远是 9x9 形式的
+        return false;
+    for(i=0;i<9;i++)    //检查输入参数：给定数独序列只包含数字 1-9 和字符 '.'
+        for(j=0;j<9;j++)
+            if(board[i][j] != '.')
+                if(board[i][j]<'1'|| board[i][j]>'9')
+                {
+                    printf("参数board[%c][%c]= %c  error\n",i,j,board[i][j]);
+                    return false;  
+                }   
+    int buf[9]={0};
+    int g = 0;//表示
+    //检查列
+    for(j=0;j<9;j++)
+    {
+        for(i=0;i<9;i++)//检查逐个元素 放入到buf中
+            if(board[i][j] != '.')
+                buf[ board[i][j]-'1' ] ++;
+        for(i=0;i<9;i++)//检查是否有重复
+        {
+            if(buf[i]>1)
+                return false;
+            buf[i]= 0;     //及时清零               
+        }     
+    }
+    printf("列 pass\n");
+    //检查行
+    for(i=0;i<9;i++)
+    {
+        for(j=0;j<9;j++)//检查逐个元素 放入到buf中
+            if(board[i][j] != '.')
+                buf[ board[i][j] -'1'] ++;
+        for(j=0;j<9;j++)//检查是否有重复
+        {
+            if(buf[j]>1)
+                return false;
+            buf[j] = 0;                    
+        }     
+    }
+    printf("行 pass\n");
+    //检查方框
+    int k[9][2]={{0,0},{0,3},{0,6},{3,0},{3,3},{3,6},{6,0},{6,3},{6,6}};
+
+    int z=0;
+    for(int z=0;z<9;z++)//9个框框
+    {
+        for(i=k[z][0];i<k[z][0]+3;i++)
+            for(j=k[z][1];j<k[z][1]+3;j++)
+            {                
+                if(board[i][j] != '.')
+                        buf[ board[i][j]-'1' ] ++;
+            }
+        for(j=0;j<9;j++)//检查是否有重复
+        {
+            if(buf[j]>1)
+                return false;
+            buf[j]= 0;                    
+        }        
+    }
+    printf("方框 pass\n");
+    
+    return true;
+    
+}
