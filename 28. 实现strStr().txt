@@ -1,0 +1,79 @@
+28. 实现strStr()
+题目描述提示帮助提交记录社区讨论阅读解答
+随机一题
+实现 strStr() 函数。
+
+给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。
+
+示例 1:
+
+输入: haystack = "hello", needle = "ll"
+输出: 2
+示例 2:
+
+输入: haystack = "aaaaa", needle = "bba"
+输出: -1
+说明:
+
+当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。
+
+对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。
+
+
+int strStr(char* haystack, char* needle) {
+    printf("%d %d\n",strlen(haystack),strlen(needle));
+    if(0 == strlen(needle))  //空字符串时我们应当返回 0 
+        return 0;
+    if(strlen(haystack) < strlen(needle))
+        return -1;
+    //法2：用strncmp(str1,str2,len)函数实现
+     //如果字符串s1与s2的前size个字符相同，函数返回值为0
+    int i;
+    for(i=0;i <= strlen(haystack)-strlen(needle);i++)  //只用遍历到这里就可以了<=,有等于号
+        if(0 == strncmp(haystack+i,needle,strlen(needle))) //如果字符串s1与s2的前size个字符相同，函数返回值为0
+           return i;
+        
+    /*
+    //法1：用指针做：
+    //时间超限：只要遍历到，p1剩下的位置与p2长度相同位置
+    char *p1 = haystack;
+    char *p2 = needle;
+    char *temp_p1 = p1;
+    char *temp_p2 = p2;
+    int pos=0;
+    while(*p1)
+    {
+        temp_p1 = p1;
+        temp_p2 = p2;
+        while(*temp_p1++ == *temp_p2++)//*temp_p1!='\0'&&*temp_p2!='\0'&&
+        {
+            if( *temp_p2 == '\0' )
+                return pos;   
+        }
+ 
+        p1++;
+        pos++;   
+        if(strlen(haystack)-pos < strlen(needle))   //#####时间超限：只要遍历到，p1剩下的位置与p2长度相同位置
+            return -1;
+    }
+    */
+    
+    return -1;
+}
+
+/*
+参考代码：
+int strStr(char* haystack, char* needle)
+{
+	int needleLen = strlen(needle);
+	if (needleLen == 0) {return 0;}
+	int hayLen = strlen(haystack);
+	if (hayLen < needleLen) {return -1;}
+	for (int i = 0; i <= hayLen - needleLen; i++) {
+		if (!strncmp(haystack+i,needle,needleLen)) {
+			return i; 
+		}
+	}
+	return -1;
+}
+*/
