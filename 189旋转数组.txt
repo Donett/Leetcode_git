@@ -1,0 +1,93 @@
+旋转数组
+数组法：
+error： Line 23: index 11938 out of bounds for type 'int [100]'
+
+//法1：少量数组法
+void rotate(int* nums, int numsSize, int k) {
+    
+    int i=0;
+    int temp[100];//临时存放
+    
+    k = k % numsSize; //右移最小次数
+    
+    /* 
+     int rotate_dir = 1;//右移标志
+    if(k>numsSize/2)
+        rotate_dir = 0;//左移
+    if(!rotate_dir) //左移
+    {
+        
+        return ;
+    }    
+    */
+    
+    //默认右移
+    //（0 ~ num-1-k） --> （k ~ num-1）
+    //   
+    for(i=numsSize-1;i>numsSize-1-k;i--)    //没有等于号 i>=numsSize-1-k
+        temp[i+k-numsSize] = nums[i];   //保存被覆盖的数nums[i]
+    for(i=numsSize-1; i>=k; i--)
+        nums[i] = nums[i-k];            //nums[i]被覆盖，提前保存到temp中去， 再nums[i]=移位前一个数
+    
+    for(i = 0; i<=k-1; i++)         //赋值
+        nums[i]=temp[i];
+    
+    
+}
+
+
+//法2：全部数组法
+void rotate(int* nums, int numsSize, int k) {
+    
+    int i=0;
+    int temp[100];//临时存放
+    
+    k = k % numsSize; //右移最小次数
+    
+    for(i=0;i<numsSize;i++)
+        temp[(i+k)%numsSize] = nums[i];//创造一个一样大小的数组，全部赋值到temp中
+    
+    for(i=0;i<numsSize;i++)
+        nums[i] = temp[i];      //再把temp复制给nums
+    
+    
+}
+
+
+//法3：只保留一个变量，逐个跳动法
+void rotate(int* nums, int numsSize, int k) {
+    
+    int now = 0,start = 0, data_to_next = 0, temp = 0;
+    int cnt = numsSize ;//用来表示跳转次数，次数到了，就停止循环
+   
+    k = k%numsSize;
+    if(k==0)
+        return;
+
+    for(start = 0;start<numsSize;start++)
+    {
+        now = start;
+        data_to_next =  nums[start%numsSize];   //第一个数，先提出来，用于 与下一个数交换
+        while(1)
+        {
+            now = now+k;
+        
+            temp = nums[now%numsSize];           //交换一次       
+            nums[now%numsSize] = data_to_next;
+            data_to_next = temp;
+            cnt--;      
+            
+            if((now%numsSize) == start)         //如果交换到start的开始，就结束本次跳转交换
+                break;
+                          
+        }
+   
+        if(cnt==0)
+            break;                
+    }   
+
+                    
+    
+    
+    
+}
