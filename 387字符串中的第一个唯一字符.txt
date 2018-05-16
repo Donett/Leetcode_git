@@ -1,0 +1,62 @@
+/*
+	  字符串中的第一个唯一字符
+	给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。
+
+	案例:
+
+	s = "leetcode"
+	返回 0.
+
+	s = "loveleetcode",
+	返回 2.
+	 
+
+	注意事项：您可以假定该字符串只包含小写字母。
+*/
+int firstUniqChar(char* s) {
+    /*
+    *此方法只适用于 只有 字母，没有数字 的时候
+    */
+    
+    int pos = -1;//默认返回-1
+    int len = strlen(s);
+    printf("len = %d\n",len);
+    
+    char *p = (char *)malloc(sizeof(int)*len+1);//要考虑/0
+    strcpy(p,s);
+    
+    int i,j;
+    int repeat_flag=0;
+    for(i=0;i<len;i++)
+    { 
+        //已重复：跳过
+        if(p[i] == 2)
+        {
+            continue;
+        }  
+        
+        //没重复：
+        repeat_flag=0;
+        for(j=i+1; j<len; j++)
+        {
+            if(p[j] == p[i]) //找到相同的元素，就标记为2，表示已重复
+            {
+                p[j] = 2;
+                repeat_flag++;//表示重复次数
+            }
+        }        
+        if(repeat_flag)
+            p[i] = 2;
+    }
+
+    //返回结果
+    for(i=0;i<len;i++)
+    {
+        printf("%d ",p[i]);
+        if(p[i]!=2)
+            return i;
+    }
+
+    
+    return pos;
+}

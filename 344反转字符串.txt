@@ -1,0 +1,19 @@
+请编写一个函数，其功能是将输入的字符串反转过来。
+
+示例：
+
+输入：s = "hello"
+返回："olleh"
+
+char* reverseString(char* s) {
+   int len = strlen(s);
+    int i;
+    char temp;
+    for(i=0;i<len/2;i++)    //i<len/2就可以了，奇数，不交换中间那个数
+    {
+        temp = s[i];
+        s[i]=s[len-1-i];
+        s[len-1-i]=temp;
+    }
+    return s;
+}

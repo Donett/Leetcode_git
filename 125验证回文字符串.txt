@@ -1,0 +1,92 @@
+/*
+	验证回文字符串
+	给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
+
+	说明：本题中，我们将空字符串定义为有效的回文串。
+
+	示例 1:
+
+	输入: "A man, a plan, a canal: Panama"
+	输出: true
+	示例 2:
+
+	输入: "race a car"
+	输出: false
+*/
+bool isPalindrome(char* s) {    
+//2个游标比较  4 ms
+    int start=0, end=strlen(s)-1;
+    int i;
+    for(i=0;start<end;i++)
+    {
+        
+        while(!( 
+                (s[start]>='a'&&s[start]<='z') 
+                || (s[start]>='A'&&s[start]<='Z' ) 
+                || (s[start]>='0' && s[start]<='9' )
+                ) )//大小写字母+数字
+        {     
+            start++;
+            if(start>=end)
+                return true;
+        }
+        while(!( 
+                (s[start]>='a'&&s[start]<='z') 
+                || (s[start]>='A'&&s[start]<='Z' ) 
+                || (s[start]>='0' && s[start]<='9' )
+                ) )//大小写字母+数字
+        {     
+            end--;
+            if(end<=start)
+                return true;  
+        }
+        
+        if(tolower(s[start])!=tolower(s[end]))
+            return false;
+        start++;
+        end--;
+    }
+    return true;
+}
+/*
+bool isPalindrome(char* s) {    
+//先去除 数字和字母 外的其他符号，形成新数组再比较  ！！时间超限
+    //空字符串
+    if(s==NULL) //题目要求：本题中，我们将空字符串定义为有效的回文串。
+        return true;
+ 
+    //大写->小写 +32
+    //- <ctype.h>函数库：int tolower(int)
+    int i;
+    int len=0;
+    char *p = (char*)malloc(sizeof(char)*strlen(s)+1);
+    for(i=0;i<strlen(s);i++)//只考虑字母和数字字符，忽略字母的大小写
+    {
+        if((s[i]>='a'&&s[i]<='z') || (s[i]>='A'&&s[i]<='Z' ) )//大小写字母
+        {
+           p[len] = tolower(s[i]);
+            len++;
+        }   
+        if(s[i]>='0' && s[i]<='9' )//数字
+        {
+           p[len] = s[i];
+            len++;
+        }           
+    }
+   
+    //DEBUG
+    for(i = 0;i<len;i++)
+    {
+        printf("%c",p[i]);
+    }
+    //检查新数组是否为回文，返回
+    for(i = 0;i<len/2;i++)
+    {
+           if(p[i]!=p[len-1-i])
+                return false;
+        
+    }
+        
+    return true;
+}
+*/
