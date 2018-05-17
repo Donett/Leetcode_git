@@ -1,0 +1,106 @@
+ 19删除链表的倒数第N个节点
+给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+
+示例：
+
+给定一个链表: 1->2->3->4->5, 和 n = 2.
+
+当删除了倒数第二个节点后，链表变为 1->2->3->5.
+说明：
+
+给定的 n 保证是有效的。
+
+进阶：
+
+你能尝试使用一趟扫描实现吗？
+
+//进阶：你能尝试使用一趟扫描实现吗？
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
+    struct ListNode* start = head;  //顺序指针
+    struct ListNode* end = head;    //逆序指针
+    
+    struct ListNode* end_former = head; 
+    int i = 1;
+    while( i<n )//给定的 n 保证是有效的。
+    {
+        start = start->next;
+        i++;  
+    }   //结束时，start指向第n个元素
+    //如果start为尾节点，即要删除首节点
+    struct ListNode* p = head; 
+    if(start->next == NULL)
+    {
+        head=head->next;
+        free(p);
+        return head;
+    }
+    while(start->next != NULL)
+    {
+        start = start->next;
+        end_former = end; //end_former始终指向end的前一个元素
+        end = end->next;    
+    }//结束时，end指向倒数第n个元素，即为要删除的元素
+    
+    end_former->next = end->next;
+    free(end);
+    
+    return head;
+}
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+
+/*//遍历2趟 
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
+    
+    //1.计算单链表的最长长度
+    //head即为第一个元素
+    struct ListNode* p = head;
+    int len = 0;
+    while( p != NULL)
+    {
+        len++;
+        p = p->next;
+    }
+    p = head;
+    
+    
+    //2.找到要删除的节点位置pos
+ 
+    int pos = len - n + 1;//第 len - n +1个数
+    printf("pos=%d  len=%d \n",pos,len);
+    
+    //如果要删除头结点
+    if(1 == pos)
+    {
+        p = head;
+        head = head->next;
+        free(p);
+        return head;
+    }
+
+    //一般删除：
+    //pos前一个->pos后一个
+    //free(pos)
+    p = head;
+    int i = 1; //former
+    while(p != NULL && i < pos-1) //找到pos的前一个数
+    {
+        p = p->next;    //第 len - n 个数
+        i++;   
+    }
+    printf("%d \n",p->val);
+    
+    struct ListNode* p_former = p ;         //前节点p_former
+    p = p->next;                            //要删除的节点p
+    p_former->next =  p_former->next->next; //前节点p_former 指向next的next
+    free(p);                                //删除节点
+    
+    return head;
+}
+*/
