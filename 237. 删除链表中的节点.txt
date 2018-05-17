@@ -1,0 +1,21 @@
+237. 删除链表中的节点
+请编写一个函数，使其可以删除某个链表中给定的（非末尾的）节点，您将只被给予要求被删除的节点。
+
+比如：假设该链表为 1 -> 2 -> 3 -> 4  ，给定您的为该链表中值为 3 的第三个节点，那么在调用了您的函数之后，该链表则应变成 1 -> 2 -> 4 。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+void deleteNode(struct ListNode* node) {
+    //把该节点 代替 下一个节点，删除下一个节点
+    struct ListNode* p = node->next;
+    node->val = p->val;
+    node->next = p->next;
+    
+    
+    free(p);
+    return ;
+}

@@ -1,0 +1,66 @@
+  14最长公共前缀
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 ""。
+
+示例 1:
+
+输入: ["flower","flow","flight"]
+输出: "fl"
+示例 2:
+
+输入: ["dog","racecar","car"]
+输出: ""
+解释: 输入不存在公共前缀。
+说明:
+
+所有输入只包含小写字母 a-z 。
+
+char* longestCommonPrefix(char** strs, int strsSize) {
+    
+    //printf("%d\n",strsSize);
+    if(strsSize<=0)
+        return "";     
+    else if(strsSize == 1)
+        return *strs;    
+ 
+    int i,j;
+
+    //strsSize： 总字符串个数，
+    //minlen：   字符串最短min长度    
+    //1.求最短的字符串的长度 minlen
+    int minlen = strlen(strs[0]);   
+    for(i=0;i<strsSize;i++)
+        if(strlen(strs[i]) < minlen)
+            minlen = strlen(strs[i]);
+    printf("minlen= %d\n",minlen);
+
+    //2、判断是否有相同的字母
+    int cnt = 0;//计数 相同元素的个数
+    int flag = 1;//退出标志
+    char * returnstr = (char *)malloc(sizeof(char)*minlen+1);
+    for(j=0;j<minlen  ;j++)
+    {              
+        for(i=0;i<strsSize;i++)
+         {
+            if( strs[i][j] == strs[0][j] )  //判断相同？
+                ;
+            else
+            {
+                flag = -1;  //不同，要跳出2层循环，用flag实现
+                break;                
+            }
+         }
+        if(flag == -1)//退出比较，跳出2层循环
+            break;
+
+        returnstr[cnt]=strs[0][j];  
+        cnt++;
+    }
+    printf("cnt= %d\n",cnt);
+    returnstr[cnt] = '\0';
+
+    
+    return returnstr;
+
+}
