@@ -1,0 +1,80 @@
+141. 环形链表
+环形链表
+给定一个链表，判断链表中是否有环。
+
+进阶：
+你能否不使用额外空间解决此题？
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+ //空间复杂度o（1）
+bool hasCycle(struct ListNode *head) {
+    struct ListNode *slow = head;
+    struct ListNode *fast = head;
+
+    while(fast!=NULL&&fast->next!=NULL)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if(slow == fast)
+            return true;    //有回环，fast指针追上了slow
+        //fast->遍历2遍到末尾
+        //slow刚好只遍历1遍到末尾
+        //所以fast 一定能追上slow
+    }
+    //有NULL出现，就return
+    return false;
+}
+
+
+
+
+
+
+/*
+bool hasCycle(struct ListNode *head) {
+    struct ListNode *slow,*fast;
+    slow = head;
+    fast = head;
+
+    while(fast&&fast->next){
+        slow = slow->next;
+        fast = fast->next->next;
+        if(slow==fast)
+            return true;        
+    }
+    return false;
+}
+*/
+/*
+//空间复杂度o（n）
+//用数组保存，指针的地址
+//判断下一跳的地址是否会和前面的数组地址相同，相同则代表有回环
+//如果遇到NULL，则说明无回环，退出并return
+//没遇到NULL，一直执行
+bool hasCycle(struct ListNode *head) {
+    //if(head == NULL || head->next == NULL)
+    //    return false;
+
+    //用数组保存遍历过的指针的地址    //指针 即 地址
+    int addr[10000];
+    
+    int i=0;
+    int pos=0;
+    struct ListNode * p = head;
+    while(p!=NULL)
+    {
+        addr[pos] = p;//当前位置pos，判断是否和前面的有相同
+        for(i=0;i<pos;i++)
+            if(addr[i]==addr[pos])
+                 return true;//有回环
+        p=p->next;
+        pos++;
+    }
+    return false;//无回环
+}
+*/
