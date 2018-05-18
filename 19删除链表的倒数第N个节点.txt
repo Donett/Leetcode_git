@@ -14,6 +14,10 @@
 
 你能尝试使用一趟扫描实现吗？
 
+//法1：遍历一趟，2个指针
+//原理如下：
+//开始时：第一个指向第1个元素，第二个指向第n个元素，同时右移2个指针
+//结束时：第一个指向倒数第n个元素，第二个指向最后一个元素
 //进阶：你能尝试使用一趟扫描实现吗？
 struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
     struct ListNode* start = head;  //顺序指针
@@ -55,7 +59,10 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
  */
 
 
-/*//遍历2趟 
+/*
+//法1：常规做法：
+//遍历2趟
+//先求出总长度，再找到倒数第n个元素位置，再做删除 
 struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
     
     //1.计算单链表的最长长度

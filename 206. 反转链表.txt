@@ -1,0 +1,108 @@
+206. 反转链表
+反转链表
+反转一个单链表。
+
+示例:
+
+输入: 1->2->3->4->5->NULL
+输出: 5->4->3->2->1->NULL
+进阶:
+你可以迭代或递归地反转链表。你能否用两种方法解决这道题？
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+ 
+//法3：递归调用(难以理解)  调用自身来实现
+struct ListNode* reverseList(struct ListNode* head) {  
+    if(head == NULL)  
+        return NULL;  
+    if(head->next == NULL)  
+        return head;  
+      
+    //                   NOW -> NEXT(node)->NULL  
+    //改为       NULL  <- NOW  <-NEXT       NULL      
+    struct ListNode* NOW = head;  
+    struct ListNode* NEXT = NOW->next;  
+    struct ListNode* rear  = (struct ListNode*) reverseList(NEXT);  //指向最后一个节点  
+    NEXT ->next = NOW;  
+    NOW  ->next = NULL;  
+    return rear;  
+}  
+   
+
+//法2：o(1)空间 直接 链表交换法
+迭代调用：o(1)
+好理解，直接实现也简单
+struct ListNode* reverseList(struct ListNode* head) {
+    if(head == NULL || head->next == NULL)   //空链表或者只有一个节点
+        return head;
+    
+    struct ListNode* lastp = NULL;
+    struct ListNode* nowp  = head;
+    struct ListNode* nextp = head->next;
+    
+    //NULL <-   A         B    ->  C      ->      NULL
+    //          lastp     nowp     nextp
+    //                    nowp->next = nextp
+    
+    //NULL <-   A     <-  B        C      ->      NULL
+    //          lastp <- nowp      nextp
+    //          (改为nowp->next = lastp)
+    
+    //NULL <-   A     <-  B        C      ->      NULL
+    //下一跳
+    //                    lastp     nowp          nextp
+    while(nextp !=NULL)
+    {
+        nowp->next = lastp;
+        lastp = nowp;
+        nowp = nextp;
+        nextp = nextp->next;
+        
+    }
+    nowp->next = lastp;
+
+    return nowp;
+    
+}
+/*
+//法1：用 数组空间o(n) 来实现链表反转‘
+法3：常规做法，o(n)
+用数组先保存，然后再反转链表
+struct ListNode* reverseList(struct ListNode* head) {
+    if(head == NULL)
+        return NULL;
+    struct ListNode* p = head;
+   
+    int i = 0;
+    int BUF[10000];
+    int len=0;
+    while(p != NULL)
+    {
+        BUF[i] = p->val;
+        i++;
+        p=p->next;
+    }
+    len = i;
+    printf("len = %d\n",len);
+
+    struct ListNode* head2 = (struct ListNode*)malloc(sizeof(struct ListNode));
+    p = head2;  
+    for(i = len-1;i>=0;i--)
+    {
+        p->val = BUF[i];
+        if(i == 0)  //最后一个指向NULL的不能申请内存,否则就输出0，多了一个元素
+        {
+            p->next = NULL;
+            break;
+        }
+        p->next = (struct ListNode*)malloc(sizeof(struct ListNode));
+        p = p->next;    
+    }
+    return head2;
+}
+*/

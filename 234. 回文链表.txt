@@ -1,0 +1,108 @@
+234. 回文链表
+回文链表
+请判断一个链表是否为回文链表。
+
+示例 1:
+
+输入: 1->2
+输出: false
+示例 2:
+
+输入: 1->2->2->1
+输出: true
+进阶：
+你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+//o(1)空间复杂度
+//把原链表分开成为2个链表
+//逆序前半部分，顺序后半部分
+//注意：总长度为奇数是，顺序后半部分的位置+1，不管最中间的数
+//后用2个指针移位比较
+bool isPalindrome(struct ListNode* head) {
+    if(head == NULL || head->next == NULL)//只有0个元素、1个元素，默认返回true
+        return true;
+  
+//先排序前半部分，后用2个指针移位比较
+    //找总长度len
+    int len=0;
+    struct ListNode* p = head;
+    while(p!=NULL)
+    {
+        len++;
+        p = p->next;
+    }
+    //假定可以把原链表分开成为2个链表
+    
+    //链表2：
+    //找到第len/2元素的下一个元素
+    p = head;
+    int i = 1;
+    while(p!=NULL && i<len/2+1 )
+    {
+        p = p->next;
+        i++;
+    }
+    struct ListNode* secondstart = p;
+    if(len % 2 ==1)//奇数总个数，跳过中间那个
+        secondstart = secondstart->next;
+    printf("secondstart:%d\n",secondstart->val);
+    
+    //链表1：
+    struct ListNode* LAST = NULL;
+    struct ListNode* NOW = head;
+    struct ListNode* NEXT = head->next;
+    //对前半部分开始逆序
+    //奇数，中间不用管
+    //奇数偶数都是排序 len/2 个元素
+    for(i=0;i<len/2;i++)//逆序len/2个元素,要改变len/2 次
+    {
+        NOW ->next = LAST;
+        LAST = NOW;
+        NOW = NEXT;
+        NEXT = NEXT->next;
+    }
+    struct ListNode* firststart  = LAST;    //firststart在这个位置
+    printf("firststart:%d\n",firststart->val);
+    
+    //开始比较链表1和2:
+    for(i=0;i<len/2;i++)
+    {
+        if(firststart->val != secondstart->val)
+            return false;
+        firststart = firststart->next;
+        secondstart = secondstart->next;        
+    }
+
+    return true;
+}
+
+/*
+//O(n) 空间复杂度
+//用数组保存链表的值，然后比较数组即可
+bool isPalindrome(struct ListNode* head) {
+    if(head == NULL)
+        return true;
+    //O(n) 时间复杂度：创造数组来做
+    struct ListNode* p = head;
+    int i,len=0;
+    int buf[1000000];//O(n) 时间复杂度
+    for(i = 0; p!= NULL ;i++)
+    {
+        buf[i] = p->val;
+        len++;
+        p = p->next;
+    }
+    for(i= 0;i<=len/2;i++)
+        if(buf[i]!=buf[len-1-i])
+            return false;
+    return true;
+        
+    
+    
+}
