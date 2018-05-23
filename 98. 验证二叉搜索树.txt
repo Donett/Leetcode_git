@@ -1,0 +1,89 @@
+98. 验证二叉搜索树
+验证二叉搜索树
+给定一个二叉树，判断其是否是一个有效的二叉搜索树。
+
+一个二叉搜索树具有如下特征：
+
+节点的左子树只包含小于当前节点的数。
+节点的右子树只包含大于当前节点的数。
+所有左子树和右子树自身必须也是二叉搜索树。
+示例 1:
+
+输入:
+    2
+   / \
+  1   3
+输出: true
+示例 2:
+
+输入:
+    5
+   / \
+  1   4
+     / \
+    3   6
+输出: false
+解释: 输入为: [5,1,4,null,null,3,6]。
+     根节点的值为 5 ，但是其右子节点值为 4 
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+//法1：可以利用它本身的性质来做，即左<根<右
+//法2：通过中序遍历将所有的节点值存到一个数组里，然后再来判断这个数组是不是有序的
+//法3：                                  递归的中序遍历，但不同之处是不将遍历结果存入一个数组遍历完成再比较，而是每当遍历到一个新节点时和其上一个节点比较，如果不大于上一个节点那么则返回false，全部遍历完成后返回true：
+
+
+void inorder(struct TreeNode* root,int *buf,int * pos)//中序遍历
+{
+    //中序遍历
+    //要保存值到数组中，用2个指针，一个表示数组的首地址一直不变的数，一个表示角标，角标++；
+    if(root == NULL )   //该末尾节点满足二叉树
+        return ;   //do nothing
+    
+    inorder(root->left,buf,pos);
+
+    //输出该元素到数组
+    //printf("%d ",root->val);
+    buf[*pos] = root->val;
+    *pos = *pos +1;
+    inorder(root->right,buf,pos);
+
+}
+bool isValidBST(struct TreeNode* root) {
+    if(root == NULL )
+        return true;
+    
+    //知识点1：指针和数组，都能给函数传递参数，返回有效参数
+    //方式1：用指针申请空间
+    //int *buf=(int*)malloc(sizeof(int)*100000);   //数组
+    //int *pos=(int*)malloc(sizeof(int));         //保存数组的角标
+    //*pos = 0;
+    
+    //方式2：用数组空间
+    int buf[100000];
+    int pos[1] ;
+    pos[0] = 0;
+
+    inorder(root,buf,pos);    
+
+    printf("\n");
+    
+    //*pos 代表长度 
+    //数组：0 ~ *pos-1
+    int i;
+    for(i=0;i< *pos;i++)
+        printf("%d ",buf[i]);
+
+    //必须要保证中序遍历是个递增的数组
+    for(i=1;i< *pos;i++)            
+        if(buf[i-1] >= buf[i]) //要求左严格小于<右，如果左>=右，则不递增，返回false
+            return false;
+    
+    
+    return true;
+}
